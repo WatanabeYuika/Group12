@@ -1,0 +1,22 @@
+アカウント作ってくれてありがとう！
+そのアカウント名かアドレスも教えてください！
+
+それとまず初期設定をお願いします….
+$ sudo apt install git
+　か
+$ sudo apt-get update
+$ sudo apt-get install git　かのどっちかでGitというコマンドが使えるようにしてください。
+
+その後
+$ cd /Windows/csprog   
+$ git clone https://github.com/WatanabeYuika/Group12
+  ←csprogのファイルにGroup12のフォルダのクローンを作ります.
+  　ここに演習ページでダウンロードして解凍したものが入っているのでぜひ
+　　そのファイルが必要ないなら普通にグループ活動用のフォルダ作って置いてください！
+
+$ cd Group12　（もしくは　グループ活動用のフォルダの名前）
+$ git init  ←ローカルリポジトリの作成　(そのフォルダの中に.gitっていうフォルダができます)
+
+
+   
+ 
