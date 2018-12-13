@@ -26,6 +26,7 @@ public class MoveChara {
     private int count   = 0;
     private int diffx   = 1;
     private int charaDir;
+    private int item_count = 0; //アイテムのカウント
 
     MoveChara(int startX, int startY, MapData mapData){
         this.mapData = mapData;
@@ -79,10 +80,16 @@ public class MoveChara {
         }
     }
 
+    public int getitem_count(){
+        return item_count;
+    }
+
     public boolean canMove(int dx, int dy){
         if (mapData.getMap(posX+dx, posY+dy) == MapData.TYPE_WALL){
             return false;
         } else if (mapData.getMap(posX+dx, posY+dy) == MapData.TYPE_NONE){
+            return true;
+        }else if (mapData.getMap(posX+dx, posY+dy) == MapData.TYPE_ITEM){
             return true;
         }
         return false;
@@ -96,6 +103,17 @@ public class MoveChara {
         }else {
             return false;
         }
+    }
+
+    public boolean Item(int cx, int cy){  //アイテム取得メッソド
+        if(mapData.getMap(cx, cy) == MapData.TYPE_ITEM){
+            mapData.setMap(cx, cy, MapData.TYPE_NONE);
+            mapData.setImageViews();
+            item_count++;
+            System.out.println("Item"+ item_count);
+            return true;
+        }
+        return true;
     }
 
     public ImageView getCharaImageView(){
