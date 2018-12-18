@@ -108,13 +108,15 @@ public class MapData {
             int x,y;
             x = (int)(Math.random()*width);
             y = (int)(Math.random()*height);
-            if(getMap(x,y) == MapData.TYPE_NONE){
-                if(j == 1){
-                    setMap(x,y,MapData.TYPE_KEY);//鍵の配置
-                }else if(j == 2){
-                    setMap(x,y,MapData.TYPE_ITEM);//にんじんの配置
-                }
+            if(x != 1 && y != 1){
+                if(getMap(x,y) == MapData.TYPE_NONE){
+                    if(j == 1){
+                        setMap(x,y,MapData.TYPE_KEY);//鍵の配置
+                    }else if(j == 2){
+                        setMap(x,y,MapData.TYPE_ITEM);//にんじんの配置
+                    }
                 i++;
+                }
             }
         }
     }
