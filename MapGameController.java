@@ -59,6 +59,7 @@ public class MapGameController implements Initializable {
     public void func2ButtonAction(ActionEvent event) { }
     public void func3ButtonAction(ActionEvent event) { }
     public void func4ButtonAction(ActionEvent event) { }
+
     public void keyAction(KeyEvent event){
         KeyCode key = event.getCode();
         if (key == KeyCode.DOWN){
