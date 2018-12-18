@@ -17,9 +17,11 @@ public class MapGameController implements Initializable {
     public ImageView[] mapImageViews;
 //    public Group[] mapGroups;
 
+    public Label itemLabel;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        mapData = new MapData(21,15);
+        mapData = new MapData(21,15); //fin
         chara = new MoveChara(1,1,mapData);
 //        mapGroups = new Group[mapData.getHeight()*mapData.getWidth()];
         mapImageViews = new ImageView[mapData.getHeight()*mapData.getWidth()];
@@ -35,10 +37,12 @@ public class MapGameController implements Initializable {
     public void mapPrint(MoveChara c, MapData m){
         int cx = c.getPosX();
         int cy = c.getPosY();
+        c.Item(cx,cy);
         mapGrid.getChildren().clear();
         for(int y=0; y<mapData.getHeight(); y++){
             for(int x=0; x<mapData.getWidth(); x++){
                 int index = y*mapData.getWidth() + x;
+                mapImageViews[index] = m.getImageView(x,y);
                 if (x==cx && y==cy) {
                     mapGrid.add(c.getCharaImageView(), x, y);
                 } else {
@@ -46,12 +50,20 @@ public class MapGameController implements Initializable {
                 }
             }
         }
+        int key_count = c.getKey_count();
+        String Key = String.valueOf(key_count);
+        itemLabel.setText(Key);
     }
 
-    public void func1ButtonAction(ActionEvent event) { }
+    /*public void func1ButtonAction(ActionEvent event) { }
     public void func2ButtonAction(ActionEvent event) { }
     public void func3ButtonAction(ActionEvent event) { }
     public void func4ButtonAction(ActionEvent event) { }
+
+    	<Button text="func1" prefWidth="100" onAction="#func1ButtonAction"/>
+	<Button text="func2" prefWidth="100" onAction="#func2ButtonAction"/>
+	<Button text="func3" prefWidth="100" onAction="#func3ButtonAction"/>
+	<Button text="func4" prefWidth="100" onAction="#func4ButtonAction"/>*/
 
     public void keyAction(KeyEvent event){
         KeyCode key = event.getCode();
@@ -59,6 +71,10 @@ public class MapGameController implements Initializable {
             downButtonAction();
         }else if (key == KeyCode.RIGHT){
             rightButtonAction();
+        }else if (key == KeyCode.UP){
+            upButtonAction();
+        }else if (key == KeyCode.LEFT){
+            leftButtonAction();
         }
     }
 
@@ -76,6 +92,16 @@ public class MapGameController implements Initializable {
         downButtonAction();
     }
 
+    public void upButtonAction(){
+        outputAction("UP");
+        chara.setCharaDir(MoveChara.TYPE_UP);
+        chara.move(0, -1);
+        mapPrint(chara, mapData);
+    }
+    public void upButtonAction(ActionEvent event) {
+        upButtonAction();
+    }
+
     public void rightButtonAction(){
         outputAction("RIGHT");
         chara.setCharaDir(MoveChara.TYPE_RIGHT);
@@ -84,5 +110,15 @@ public class MapGameController implements Initializable {
     }
     public void rightButtonAction(ActionEvent event) {
         rightButtonAction();
+    }
+
+    public void leftButtonAction(){
+        outputAction("LEFT");
+        chara.setCharaDir(MoveChara.TYPE_LEFT);
+        chara.move(-1, 0);
+        mapPrint(chara, mapData);
+    }
+    public void leftButtonAction(ActionEvent event) {
+        leftButtonAction();
     }
 }
