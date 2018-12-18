@@ -55,16 +55,10 @@ public class MapGameController implements Initializable {
         itemLabel.setText(Key);
     }
 
-    /*public void func1ButtonAction(ActionEvent event) { }
+    public void func1ButtonAction(ActionEvent event) { }
     public void func2ButtonAction(ActionEvent event) { }
     public void func3ButtonAction(ActionEvent event) { }
     public void func4ButtonAction(ActionEvent event) { }
-
-    	<Button text="func1" prefWidth="100" onAction="#func1ButtonAction"/>
-	<Button text="func2" prefWidth="100" onAction="#func2ButtonAction"/>
-	<Button text="func3" prefWidth="100" onAction="#func3ButtonAction"/>
-	<Button text="func4" prefWidth="100" onAction="#func4ButtonAction"/>*/
-
     public void keyAction(KeyEvent event){
         KeyCode key = event.getCode();
         if (key == KeyCode.DOWN){
