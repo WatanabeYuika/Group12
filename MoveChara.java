@@ -26,6 +26,7 @@ public class MoveChara {
     private int count   = 0;
     private int diffx   = 1;
     private int charaDir;
+    private int key_count = 0;//鍵のカウント
     private int item_count = 0; //アイテムのカウント
 
     MoveChara(int startX, int startY, MapData mapData){
@@ -80,14 +81,20 @@ public class MoveChara {
         }
     }
 
-    public int getitem_count(){
+    public int getItem_count(){
         return item_count;
+    }
+
+    public int getKey_count(){
+        return key_count;
     }
 
     public boolean canMove(int dx, int dy){
         if (mapData.getMap(posX+dx, posY+dy) == MapData.TYPE_WALL){
             return false;
         } else if (mapData.getMap(posX+dx, posY+dy) == MapData.TYPE_NONE){
+            return true;
+        }else if (mapData.getMap(posX+dx, posY+dy) == MapData.TYPE_KEY){//アイテム上を動けるように
             return true;
         }else if (mapData.getMap(posX+dx, posY+dy) == MapData.TYPE_ITEM){
             return true;
@@ -105,12 +112,18 @@ public class MoveChara {
         }
     }
 
-    public boolean Item(int cx, int cy){  //アイテム取得メッソド
-        if(mapData.getMap(cx, cy) == MapData.TYPE_ITEM){
+
+    public boolean Item(int cx, int cy){  //アイテム取得メソッド
+        if(mapData.getMap(cx, cy) == MapData.TYPE_KEY || mapData.getMap(cx, cy) == MapData.TYPE_ITEM){
+            if(mapData.getMap(cx, cy) == MapData.TYPE_KEY){
+                key_count++;
+                System.out.println("Key"+ key_count);
+            }else if(mapData.getMap(cx, cy) == MapData.TYPE_ITEM){
+                item_count++;
+                System.out.println("Item"+ item_count);
+            }
             mapData.setMap(cx, cy, MapData.TYPE_NONE);
             mapData.setImageViews();
-            item_count++;
-            System.out.println("Item"+ item_count);
             return true;
         }
         return true;

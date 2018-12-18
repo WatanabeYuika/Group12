@@ -50,9 +50,9 @@ public class MapGameController implements Initializable {
                 }
             }
         }
-        int item_count = c.getitem_count();
-        String Item = String.valueOf(item_count);
-        itemLabel.setText(Item);
+        int key_count = c.getKey_count();
+        String Key = String.valueOf(key_count);
+        itemLabel.setText(Key);
     }
 
     public void func1ButtonAction(ActionEvent event) { }
@@ -88,7 +88,7 @@ public class MapGameController implements Initializable {
     }
 
     public void upButtonAction(){
-        outputAction("up");
+        outputAction("UP");
         chara.setCharaDir(MoveChara.TYPE_UP);
         chara.move(0, -1);
         mapPrint(chara, mapData);
@@ -108,7 +108,7 @@ public class MapGameController implements Initializable {
     }
 
     public void leftButtonAction(){
-        outputAction("left");
+        outputAction("LEFT");
         chara.setCharaDir(MoveChara.TYPE_LEFT);
         chara.move(-1, 0);
         mapPrint(chara, mapData);
