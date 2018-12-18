@@ -4,13 +4,13 @@ import javafx.scene.image.ImageView;
 public class MapData {
     public static final int TYPE_NONE   = 0;
     public static final int TYPE_WALL   = 1;
-    public static final int TYPE_OTHERS = 2;
+    public static final int TYPE_KEY = 2;
     public static final int TYPE_ITEM = 3;
     private static final String mapImageFiles[] = {
         "png/SPACE.png",
         "png/Wall.png",
-        "png/SPACE.png",
-        "png/ninnjinn.png"// not used
+        "png/Key.png",
+        "png/ninnjinn.png"
     };
 
     private Image[] mapImages;
@@ -32,7 +32,8 @@ public class MapData {
 
         fillMap(MapData.TYPE_WALL);
         digMap(1, 3);
-        putItem(10);
+        putItem(3,1);//1を鍵にします
+        putItem(10,2);//2をにんじんにします
         setImageViews();
     }
 
@@ -101,14 +102,18 @@ public class MapData {
         }
     }
 
-    public void putItem(int n){ //アイテムの設置
+    public void putItem(int n, int j){ //アイテムの設置
         int i = 0;
         while(i < n){
             int x,y;
             x = (int)(Math.random()*width);
             y = (int)(Math.random()*height);
             if(getMap(x,y) == MapData.TYPE_NONE){
-                setMap(x,y,MapData.TYPE_ITEM);
+                if(j == 1){
+                    setMap(x,y,MapData.TYPE_KEY);//鍵の配置
+                }else if(j == 2){
+                    setMap(x,y,MapData.TYPE_ITEM);//にんじんの配置
+                }
                 i++;
             }
         }
