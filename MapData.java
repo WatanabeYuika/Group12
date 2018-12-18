@@ -4,11 +4,13 @@ import javafx.scene.image.ImageView;
 public class MapData {
     public static final int TYPE_NONE   = 0;
     public static final int TYPE_WALL   = 1;
-    public static final int TYPE_OTHERS = 2;
+    public static final int TYPE_KEY = 2;
+    public static final int TYPE_ITEM = 3;
     private static final String mapImageFiles[] = {
         "png/SPACE.png",
-        "png/WALL.png",
-        "png/SPACE.png"  // not used
+        "png/Wall.png",
+        "png/Key.png",
+        "png/ninnjinn.png"
     };
 
     private Image[] mapImages;
@@ -17,10 +19,10 @@ public class MapData {
     private int width;
     private int height;
 
-    MapData(int x, int y){
-        mapImages     = new Image[2];
+    MapData(int x, int y){  //fin
+        mapImages     = new Image[4];
         mapImageViews = new ImageView[y][x];
-        for (int i=0; i<2; i++) {
+        for (int i=0; i<4; i++) {
             mapImages[i] = new Image(mapImageFiles[i]);
         }
 
@@ -30,6 +32,8 @@ public class MapData {
 
         fillMap(MapData.TYPE_WALL);
         digMap(1, 3);
+        putItem(3,1);//1を鍵にします
+        putItem(10,2);//2をにんじんにします
         setImageViews();
     }
 
@@ -41,7 +45,7 @@ public class MapData {
         return width;
     }
 
-    public int getMap(int x, int y) {
+    public int getMap(int x, int y) { //fin
         if (x < 0 || width <= x || y < 0 || height <= y) {
             return -1;
         }
@@ -52,14 +56,14 @@ public class MapData {
         return mapImageViews[y][x];
     }
 
-    public void setMap(int x, int y, int type){
+    public void setMap(int x, int y, int type){ //fin
         if (x < 1 || width <= x-1 || y < 1 || height <= y-1) {
             return;
         }
         maps[y][x] = type;
     }
 
-    public void setImageViews() {
+    public void setImageViews() { //fin
         for (int y=0; y<height; y++) {
             for (int x=0; x<width; x++) {
                 mapImageViews[y][x] = new ImageView(mapImages[maps[y][x]]);
@@ -67,7 +71,7 @@ public class MapData {
         }
     }
 
-    public void fillMap(int type){
+    public void fillMap(int type){  //fin
         for (int y=0; y<height; y++){
             for (int x=0; x<width; x++){
                 maps[y][x] = type;
@@ -75,7 +79,7 @@ public class MapData {
         }
     }
 
-    public void digMap(int x, int y){
+    public void digMap(int x, int y){ //fin
         setMap(x, y, MapData.TYPE_NONE);
         int[][] dl = {{0,1},{0,-1},{-1,0},{1,0}};
         int[] tmp;
@@ -94,6 +98,23 @@ public class MapData {
                 setMap(x+dx, y+dy, MapData.TYPE_NONE);
                 digMap(x+dx*2, y+dy*2);
 
+            }
+        }
+    }
+
+    public void putItem(int n, int j){ //アイテムの設置
+        int i = 0;
+        while(i < n){
+            int x,y;
+            x = (int)(Math.random()*width);
+            y = (int)(Math.random()*height);
+            if(getMap(x,y) == MapData.TYPE_NONE){
+                if(j == 1){
+                    setMap(x,y,MapData.TYPE_KEY);//鍵の配置
+                }else if(j == 2){
+                    setMap(x,y,MapData.TYPE_ITEM);//にんじんの配置
+                }
+                i++;
             }
         }
     }
