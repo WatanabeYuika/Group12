@@ -42,10 +42,16 @@ public class MapData {
 
         }else if(level >= 1){
             maps = mapBox(level);
+
             if(level == 1){
                 putItem(3,1);//鍵
                 putItem(10,2);//にんじん
                 putGoal(19,13);
+                putWarp(3,1);
+                putMoveWall(12,5);
+                putMoveWall(18,11);
+                putFall(19,11);
+
             }else if(level == 2){//マップの追加に
                 putItem(3,1);//鍵
                 putItem(10,2);//にんじん
@@ -187,5 +193,21 @@ public class MapData {
 
     public void putGoal(int x, int y){
         setMap(x,y,MapData.TYPE_GOAL);
+    }
+
+    public void putWarp(int x, int y){
+        setMap(x, y, MapData.TYPE_WARP);
+    }
+
+    public void putMoveWall(int x, int y){
+        setMap(x, y, MapData.TYPE_MOVEWALL);
+    }
+
+    public void putFall(int x, int y){
+        setMap(x, y, MapData.TYPE_FALL);
+    }
+
+    public void putFallWall(int x, int y){
+        setMap(x, y, MapData.TYPE_FALLWALL);
     }
 }
