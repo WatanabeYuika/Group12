@@ -18,6 +18,7 @@ public class MoveChara {
     private int posY;
 
     private MapData mapData;
+    private MapGameController MapGameController;
 
     private Image[][] charaImages;
     private ImageView[] charaImageViews;
@@ -28,6 +29,7 @@ public class MoveChara {
     private int charaDir;
     private int key_count = 0;//鍵のカウント
     private int item_count = 0; //アイテムのカウント
+    private int goal_count = 0;//ゴールした回数
 
     MoveChara(int startX, int startY, MapData mapData){
         this.mapData = mapData;
@@ -89,6 +91,10 @@ public class MoveChara {
         return key_count;
     }
 
+    public int getGoal_count(){
+        return goal_count;
+    }
+
     public boolean canMove(int dx, int dy){
         if (mapData.getMap(posX+dx, posY+dy) == MapData.TYPE_WALL){
             return false;
@@ -99,6 +105,14 @@ public class MoveChara {
         }else if (mapData.getMap(posX+dx, posY+dy) == MapData.TYPE_ITEM){
             return true;
         }else if (mapData.getMap(posX+dx, posY+dy) == MapData.TYPE_GOAL){
+            return true;
+        }else if (mapData.getMap(posX+dx, posY+dy) == MapData.TYPE_WARP){//ワープ上を動けるように
+            return true;
+        }else if (mapData.getMap(posX+dx, posY+dy) == MapData.TYPE_MOVEWALL){
+            return false;
+        }else if (mapData.getMap(posX+dx, posY+dy) == MapData.TYPE_FALL){
+            return false;
+        }else if (mapData.getMap(posX+dx, posY+dy) == MapData.TYPE_FALLWALL){ //壁を落としたあと動けるように
             return true;
         }
         return false;
@@ -131,14 +145,14 @@ public class MoveChara {
         return true;
     }
 
-    public boolean goalin(int cx, int cy){
+    public boolean goalin(int cx, int cy){ //ゴールしたら
         if((mapData.getMap(cx,cy) == MapData.TYPE_GOAL ) && (key_count >= 3)){
-            System.out.print("GOAL!");
-            System.exit(0);
+            System.out.print("GOAL!\n");
+            goal_count++;
             return true;
-            }
+        }
 
-            return true;
+       return false;
     }
 
     public ImageView getCharaImageView(){

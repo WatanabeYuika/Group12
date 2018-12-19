@@ -7,12 +7,20 @@ public class MapData {
     public static final int TYPE_KEY = 2;
     public static final int TYPE_ITEM = 3;
     public static final int TYPE_GOAL = 4;
+    public static final int TYPE_WARP = 5;
+    public static final int TYPE_MOVEWALL = 6;
+    public static final int TYPE_FALL = 7;
+    public static final int TYPE_FALLWALL = 8;
     private static final String mapImageFiles[] = {
         "png/SPACE.png",
         "png/Wall.png",
         "png/Key.png",
         "png/ninnjinn.png",
-        "png/kaidan.png"
+        "png/kaidan.png",
+        "png/WARP.png",
+        "png/MOVEWALL.png",
+        "png/FALL.png",
+        "png/FALLWALL.png",
     };
 
     private Image[] mapImages;
@@ -21,22 +29,36 @@ public class MapData {
     private int width;
     private int height;
 
-    MapData(int x, int y){  //fin
-        mapImages     = new Image[5];
+    MapData(int x, int y,int level){ 
+            width  = x;
+            height = y;
+            maps = new int[y][x];
+        if(level == 0){
+            fillMap(MapData.TYPE_WALL);
+            digMap(1, 3);
+            putItem(3,1);//鍵
+            putItem(10,2);//にんじん
+            putGoal(19,13);  
+
+        }else if(level >= 1){
+            maps = mapBox(level);
+            if(level == 1){
+                putItem(3,1);//鍵
+                putItem(10,2);//にんじん
+                putGoal(19,13);
+            }else if(level == 2){//マップの追加に
+                putItem(3,1);//鍵
+                putItem(10,2);//にんじん
+                x = 21;
+                y = 15;
+            }
+        }
+        
+        mapImages     = new Image[8];
         mapImageViews = new ImageView[y][x];
-        for (int i=0; i<5; i++) {
+        for (int i=0; i<8; i++) {
             mapImages[i] = new Image(mapImageFiles[i]);
         }
-
-        width  = x;
-        height = y;
-        maps = new int[y][x];
-
-        fillMap(MapData.TYPE_WALL);
-        digMap(1, 3);
-        putItem(3,1);
-        putItem(10,2);
-        putGoal(1);
         setImageViews();
     }
 
@@ -122,7 +144,33 @@ public class MapData {
                 }
             }
         }
-}
+    }
+
+    public int[][] mapBox(int i) {
+        int[][] nextMap =
+            {{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+             {1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+             {1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1},
+             {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1},
+             {1,0,1,0,1,1,1,1,1,1,0,1,0,1,1,0,1,0,1,0,1},
+             {1,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,1,0,1,0,1},
+             {1,0,0,0,0,0,0,0,0,1,0,1,0,1,1,1,1,0,1,0,1},
+             {1,0,1,1,1,1,1,1,0,1,0,1,0,0,0,0,1,0,1,0,1},
+             {1,0,1,0,0,0,0,0,0,1,0,1,1,1,1,0,1,0,1,0,1},
+             {1,0,1,0,1,1,1,1,1,1,0,1,1,1,1,0,1,0,1,0,1},
+             {1,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,1,1,1,1,1},
+             {1,0,1,1,1,1,1,1,0,1,0,1,0,1,1,1,1,0,0,0,1},
+             {1,0,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,1,0,1},
+             {1,0,0,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,0,1},
+             {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}};
+
+        if(i == 2){//マップの追加に
+            //int[][] nextMap =
+            //return nextMap;   
+        }
+
+        return nextMap;
+    }
 
     public void printMap(){
         for (int y=0; y<height; y++){
@@ -137,13 +185,7 @@ public class MapData {
         }
     }
 
-    public void putGoal(int n){
-        int x = 19 ;
-        int y = 13 ;
-        int i = 0 ;
-        while( i < n ){
-           setMap(x,y,MapData.TYPE_GOAL);
-           i++;
-                }
+    public void putGoal(int x, int y){
+        setMap(x,y,MapData.TYPE_GOAL);
     }
 }
