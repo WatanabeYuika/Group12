@@ -145,6 +145,25 @@ public class MoveChara {
         return true;
     }
 
+    public boolean Warp(int cx, int cy){ //ワープできるように
+        if(mapData.getMap(cx, cy) == mapData.TYPE_WARP){
+            int width, height, x, y;
+            width = mapData.getWidth();
+            height = mapData.getHeight();
+            while(true){
+                x = (int)(Math.random()*width);
+                y = (int)(Math.random()*height);
+                if(mapData.getMap(x,y) == mapData.TYPE_NONE){
+                    posX = x;
+                    posY = y;
+                    break;
+                }
+            }	
+            System.out.print("Warp!");
+        }
+        return true;
+    }
+
     public boolean goalin(int cx, int cy){ //ゴールしたら
         if((mapData.getMap(cx,cy) == MapData.TYPE_GOAL ) && (key_count >= 3)){
             System.out.print("GOAL!\n");

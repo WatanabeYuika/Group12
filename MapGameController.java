@@ -61,6 +61,9 @@ public class MapGameController implements Initializable {
         int cy = c.getPosY();
         c.Item(cx,cy);
         boolean goal =c.goalin(cx,cy);
+        c.Warp(cx,cy);//ワープに関係
+        cx = c.getPosX();
+        cy = c.getPosY();
         mapGrid.getChildren().clear();
         for(int y=0; y<mapData.getHeight(); y++){
             for(int x=0; x<mapData.getWidth(); x++){
