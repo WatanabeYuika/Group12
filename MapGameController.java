@@ -21,9 +21,30 @@ public class MapGameController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        mapData = new MapData(21,15); //fin
+        mapData = new MapData(21,15,0);//0が最初
         chara = new MoveChara(1,1,mapData);
 //        mapGroups = new Group[mapData.getHeight()*mapData.getWidth()];
+        mapImageViews = new ImageView[mapData.getHeight()*mapData.getWidth()];
+        for(int y=0; y<mapData.getHeight(); y++){
+            for(int x=0; x<mapData.getWidth(); x++){
+                int index = y*mapData.getWidth() + x;
+                mapImageViews[index] = mapData.getImageView(x,y);
+            }
+        }
+        mapPrint(chara, mapData);
+        if (chara.goalin(chara.getPosX(),chara.getPosY()) == true){
+            newMap();
+        }
+    }
+
+    public void newMap() {//新しいマップの呼び出し
+        int level = chara.getGoal_count();
+        if(level == 1){
+            mapData = new MapData(21,15,level);
+        }else if(level == 2){
+            mapData = new MapData(21,15,level);//マップの追加に
+        }
+        chara = new MoveChara(1,1,mapData);
         mapImageViews = new ImageView[mapData.getHeight()*mapData.getWidth()];
         for(int y=0; y<mapData.getHeight(); y++){
             for(int x=0; x<mapData.getWidth(); x++){
@@ -38,7 +59,7 @@ public class MapGameController implements Initializable {
         int cx = c.getPosX();
         int cy = c.getPosY();
         c.Item(cx,cy);
-        c.goalin(cx,cy);
+        boolean goal =c.goalin(cx,cy);
         mapGrid.getChildren().clear();
         for(int y=0; y<mapData.getHeight(); y++){
             for(int x=0; x<mapData.getWidth(); x++){
@@ -54,6 +75,9 @@ public class MapGameController implements Initializable {
         int key_count = c.getKey_count();
         String Key = String.valueOf(key_count);
         itemLabel.setText(Key);
+        if(goal == true){
+            newMap();
+        }
     }
 
     public void func1ButtonAction(ActionEvent event) { }
