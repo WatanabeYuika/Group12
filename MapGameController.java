@@ -21,7 +21,7 @@ public class MapGameController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        mapData = new MapData(21,15,0);//0が最初
+        mapData = new MapData(21,15,0);//level=0が最初
         chara = new MoveChara(1,1,mapData);
 //        mapGroups = new Group[mapData.getHeight()*mapData.getWidth()];
         mapImageViews = new ImageView[mapData.getHeight()*mapData.getWidth()];
@@ -57,8 +57,8 @@ public class MapGameController implements Initializable {
     }
 
     public void mapPrint(MoveChara c, MapData m){
-        int cx = c.getPosX();
-        int cy = c.getPosY();
+        int cx = chara.getPosX();
+        int cy = chara.getPosY();
         c.Item(cx,cy);
         boolean goal =c.goalin(cx,cy);
         c.Warp(cx,cy);//ワープに関係
@@ -107,9 +107,14 @@ public class MapGameController implements Initializable {
     }
 
     public void downButtonAction(){
+        int cx = chara.getPosX();
+        int cy = chara.getPosY();
         outputAction("DOWN");
         chara.setCharaDir(MoveChara.TYPE_DOWN);
-        chara.move(0, 1);
+        boolean movewall = chara.DownMoveWall(cx,cy);
+        if (movewall == false){
+            chara.move(0, 1);
+        }
         mapPrint(chara, mapData);
     }
     public void downButtonAction(ActionEvent event) {
@@ -117,9 +122,14 @@ public class MapGameController implements Initializable {
     }
 
     public void upButtonAction(){
+        int cx = chara.getPosX();
+        int cy = chara.getPosY();
         outputAction("UP");
         chara.setCharaDir(MoveChara.TYPE_UP);
-        chara.move(0, -1);
+        boolean movewall = chara.UpMoveWall(cx,cy);
+        if (movewall == false){
+            chara.move(0, -1);
+        }
         mapPrint(chara, mapData);
     }
     public void upButtonAction(ActionEvent event) {
@@ -127,9 +137,14 @@ public class MapGameController implements Initializable {
     }
 
     public void rightButtonAction(){
+        int cx = chara.getPosX();
+        int cy = chara.getPosY();
         outputAction("RIGHT");
         chara.setCharaDir(MoveChara.TYPE_RIGHT);
-        chara.move( 1, 0);
+        boolean movewall = chara.RightMoveWall(cx,cy);
+        if (movewall == false){
+            chara.move( 1, 0);
+        }
         mapPrint(chara, mapData);
     }
     public void rightButtonAction(ActionEvent event) {
@@ -137,9 +152,15 @@ public class MapGameController implements Initializable {
     }
 
     public void leftButtonAction(){
+        int cx = chara.getPosX();
+        int cy = chara.getPosY();
         outputAction("LEFT");
         chara.setCharaDir(MoveChara.TYPE_LEFT);
-        chara.move(-1, 0);
+        boolean movewall = chara.LeftMoveWall(cx,cy);
+        if (movewall == false){
+            chara.move(-1, 0);
+        }
+        
         mapPrint(chara, mapData);
     }
     public void leftButtonAction(ActionEvent event) {
