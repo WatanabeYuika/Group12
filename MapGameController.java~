@@ -40,8 +40,6 @@ public class MapGameController implements Initializable {
         c.Item(cx,cy);
         c.goalin(cx,cy);
 	c.Warp(cx,cy);
-	cx = c.getPosX();
-	cy = c.getPosY();
         mapGrid.getChildren().clear();
         for(int y=0; y<mapData.getHeight(); y++){
             for(int x=0; x<mapData.getWidth(); x++){

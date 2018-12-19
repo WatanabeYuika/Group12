@@ -10,10 +10,10 @@ public class MapData {
     public static final int TYPE_WARP = 5;
     private static final String mapImageFiles[] = {
         "png/SPACE.png",
-        "png/WALL.png",
+        "png/Wall.png",
         "png/Key.png",
         "png/ninnjinn.png",
-        "png/FALL.png" , //Goalに対応。階段がないことへの臨時対応なので、　後に差し替え
+        "png/kaidan.png" ,
 	"png/WARP.png"
     };
 
