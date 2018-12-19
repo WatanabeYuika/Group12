@@ -38,7 +38,7 @@ public class MapData {
             digMap(1, 3);
             putItem(3,1);//鍵
             putItem(10,2);//にんじん
-            putGoal(19,13);  
+            putGoal(19,13);
 
         }else if(level >= 1){
             maps = mapBox(level);
@@ -60,9 +60,9 @@ public class MapData {
             }
         }
         
-        mapImages     = new Image[8];
+        mapImages     = new Image[9];
         mapImageViews = new ImageView[y][x];
-        for (int i=0; i<8; i++) {
+        for (int i=0; i<9; i++) {
             mapImages[i] = new Image(mapImageFiles[i]);
         }
         setImageViews();
