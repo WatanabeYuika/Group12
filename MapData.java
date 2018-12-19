@@ -6,11 +6,13 @@ public class MapData {
     public static final int TYPE_WALL   = 1;
     public static final int TYPE_KEY = 2;
     public static final int TYPE_ITEM = 3;
+    public static final int TYPE_GOAL = 4;
     private static final String mapImageFiles[] = {
         "png/SPACE.png",
         "png/Wall.png",
         "png/Key.png",
-        "png/ninnjinn.png"
+        "png/ninnjinn.png",
+        "png/kaidan.png"
     };
 
     private Image[] mapImages;
@@ -20,9 +22,9 @@ public class MapData {
     private int height;
 
     MapData(int x, int y){  //fin
-        mapImages     = new Image[4];
+        mapImages     = new Image[5];
         mapImageViews = new ImageView[y][x];
-        for (int i=0; i<4; i++) {
+        for (int i=0; i<5; i++) {
             mapImages[i] = new Image(mapImageFiles[i]);
         }
 
@@ -32,8 +34,9 @@ public class MapData {
 
         fillMap(MapData.TYPE_WALL);
         digMap(1, 3);
-        putItem(3,1);//1を鍵にします
-        putItem(10,2);//2をにんじんにします
+        putItem(3,1);
+        putItem(10,2);
+        putGoal(1);
         setImageViews();
     }
 
@@ -119,7 +122,7 @@ public class MapData {
                 }
             }
         }
-    }
+}
 
     public void printMap(){
         for (int y=0; y<height; y++){
@@ -132,5 +135,15 @@ public class MapData {
             }
             System.out.print("\n");
         }
+    }
+
+    public void putGoal(int n){
+        int x = 19 ;
+        int y = 13 ;
+        int i = 0 ;
+        while( i < n ){
+           setMap(x,y,MapData.TYPE_GOAL);
+           i++;
+                }
     }
 }

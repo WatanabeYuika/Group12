@@ -98,6 +98,8 @@ public class MoveChara {
             return true;
         }else if (mapData.getMap(posX+dx, posY+dy) == MapData.TYPE_ITEM){
             return true;
+        }else if (mapData.getMap(posX+dx, posY+dy) == MapData.TYPE_GOAL){
+            return true;
         }
         return false;
     }
@@ -129,6 +131,16 @@ public class MoveChara {
         return true;
     }
 
+    public boolean goalin(int cx, int cy){
+        if((mapData.getMap(cx,cy) == MapData.TYPE_GOAL ) && (key_count >= 3)){
+            System.out.print("GOAL!");
+            System.exit(0);
+            return true;
+            }
+
+            return true;
+    }
+
     public ImageView getCharaImageView(){
         return charaImageViews[charaDir];
     }
@@ -151,6 +163,8 @@ public class MoveChara {
             this.charaImages = images;
             this.index      = 0;
         }
+
+        
 
         @Override
         public void handle( long now ) {
