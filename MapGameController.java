@@ -41,10 +41,11 @@ public class MapGameController implements Initializable {
         int level = chara.getGoal_count();
         if(level == 1){
             mapData = new MapData(21,15,level);
+            chara = new MoveChara(1,1,mapData);
         }else if(level == 2){
             mapData = new MapData(21,15,level);//マップの追加に
+            chara = new MoveChara(1,1,mapData);
         }
-        chara = new MoveChara(1,1,mapData);
         mapImageViews = new ImageView[mapData.getHeight()*mapData.getWidth()];
         for(int y=0; y<mapData.getHeight(); y++){
             for(int x=0; x<mapData.getWidth(); x++){

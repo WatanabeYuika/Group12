@@ -16,7 +16,7 @@ public class MapData {
         "png/Wall.png",
         "png/Key.png",
         "png/ninnjinn.png",
-        "png/FALL.png",//あとで階段に
+        "png/kaidan.png",
         "png/WARP.png",
         "png/MOVEWALL.png",
         "png/FALL.png",
@@ -45,7 +45,7 @@ public class MapData {
             if(level == 1){
                 putItem(3,1);//鍵
                 putItem(10,2);//にんじん
-                putGoal(19,14);
+                putGoal(19,13);
             }else if(level == 2){//マップの追加に
                 putItem(3,1);//鍵
                 putItem(10,2);//にんじん
@@ -164,7 +164,7 @@ public class MapData {
              {1,0,0,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,0,1},
              {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}};
 
-        if(i == 2){　//マップの追加に
+        if(i == 2){//マップの追加に
             //int[][] nextMap =
             //return nextMap;   
         }
