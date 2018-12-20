@@ -21,7 +21,7 @@ public class MapGameController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        mapData = new MapData(21,15,0);//level=0が最初
+        mapData = new MapData(21,15,0);//0が最初
         chara = new MoveChara(1,1,mapData);
 //        mapGroups = new Group[mapData.getHeight()*mapData.getWidth()];
         mapImageViews = new ImageView[mapData.getHeight()*mapData.getWidth()];
@@ -45,7 +45,13 @@ public class MapGameController implements Initializable {
         }else if(level == 2){
             mapData = new MapData(21,15,level);//マップの追加に
             chara = new MoveChara(1,1,mapData);
-        }
+        }else if(level == 3){
+	    mapData = new MapData(21,15,level);
+	    chara = new MoveChara(1,1,mapData);
+	}else if(level == 4){
+	    mapData = new MapData(21,15,level);
+	    chara = new MoveChara(1,1,mapData);
+	}
         mapImageViews = new ImageView[mapData.getHeight()*mapData.getWidth()];
         for(int y=0; y<mapData.getHeight(); y++){
             for(int x=0; x<mapData.getWidth(); x++){
@@ -57,8 +63,8 @@ public class MapGameController implements Initializable {
     }
 
     public void mapPrint(MoveChara c, MapData m){
-        int cx = chara.getPosX();
-        int cy = chara.getPosY();
+        int cx = c.getPosX();
+        int cy = c.getPosY();
         c.Item(cx,cy);
         boolean goal =c.goalin(cx,cy);
         c.Warp(cx,cy);//ワープに関係
@@ -107,14 +113,9 @@ public class MapGameController implements Initializable {
     }
 
     public void downButtonAction(){
-        int cx = chara.getPosX();
-        int cy = chara.getPosY();
         outputAction("DOWN");
         chara.setCharaDir(MoveChara.TYPE_DOWN);
-        boolean movewall = chara.DownMoveWall(cx,cy);
-        if (movewall == false){
-            chara.move(0, 1);
-        }
+        chara.move(0, 1);
         mapPrint(chara, mapData);
     }
     public void downButtonAction(ActionEvent event) {
@@ -122,14 +123,9 @@ public class MapGameController implements Initializable {
     }
 
     public void upButtonAction(){
-        int cx = chara.getPosX();
-        int cy = chara.getPosY();
         outputAction("UP");
         chara.setCharaDir(MoveChara.TYPE_UP);
-        boolean movewall = chara.UpMoveWall(cx,cy);
-        if (movewall == false){
-            chara.move(0, -1);
-        }
+        chara.move(0, -1);
         mapPrint(chara, mapData);
     }
     public void upButtonAction(ActionEvent event) {
@@ -137,14 +133,9 @@ public class MapGameController implements Initializable {
     }
 
     public void rightButtonAction(){
-        int cx = chara.getPosX();
-        int cy = chara.getPosY();
         outputAction("RIGHT");
         chara.setCharaDir(MoveChara.TYPE_RIGHT);
-        boolean movewall = chara.RightMoveWall(cx,cy);
-        if (movewall == false){
-            chara.move( 1, 0);
-        }
+        chara.move( 1, 0);
         mapPrint(chara, mapData);
     }
     public void rightButtonAction(ActionEvent event) {
@@ -152,15 +143,9 @@ public class MapGameController implements Initializable {
     }
 
     public void leftButtonAction(){
-        int cx = chara.getPosX();
-        int cy = chara.getPosY();
         outputAction("LEFT");
         chara.setCharaDir(MoveChara.TYPE_LEFT);
-        boolean movewall = chara.LeftMoveWall(cx,cy);
-        if (movewall == false){
-            chara.move(-1, 0);
-        }
-        
+        chara.move(-1, 0);
         mapPrint(chara, mapData);
     }
     public void leftButtonAction(ActionEvent event) {
