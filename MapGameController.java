@@ -10,12 +10,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.Group;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.util.Duration;
-
 public class MapGameController implements Initializable {
     public MapData mapData;
     public MoveChara chara;
@@ -23,9 +17,6 @@ public class MapGameController implements Initializable {
     public ImageView[] mapImageViews;
 //    public Group[] mapGroups;
 
-    public int timeLimit = 50;
-    public Timeline timer;
-    public Label timeLabel;
     public Label itemLabel;
 
     @Override
@@ -40,7 +31,6 @@ public class MapGameController implements Initializable {
                 mapImageViews[index] = mapData.getImageView(x,y);
             }
         }
-        setTimer();
         mapPrint(chara, mapData);
         if (chara.goalin(chara.getPosX(),chara.getPosY()) == true){
             newMap();
@@ -88,11 +78,8 @@ public class MapGameController implements Initializable {
         }
         int key_count = c.getKey_count();
         String Key = String.valueOf(key_count);
-        itemLabel.setText("鍵の個数　" + Key);
+        itemLabel.setText(Key);
         if(goal == true){
-            stopTimer();
-            timeLimit = 100;
-            setTimer();
             newMap();
         }
     }
@@ -173,27 +160,10 @@ public class MapGameController implements Initializable {
         if (movewall == false){
             chara.move(-1, 0);
         }
+        
         mapPrint(chara, mapData);
     }
     public void leftButtonAction(ActionEvent event) {
         leftButtonAction();
     }
-
-    public void setTimer() {
-  		timer = new Timeline(new KeyFrame(Duration.seconds(1),new EventHandler<ActionEvent>(){
-  		    @Override
-  		    public void handle(ActionEvent event) {
-  							timeLimit = timeLimit - 1;
-                String T = String.valueOf(timeLimit);
-                timeLabel.setText("残り時間　" + T);
-  		    }
-  		}));
-
-  		timer.setCycleCount(timeLimit);
-  		timer.play();
-  	}
-
-  	public void stopTimer() {
-  		timer.stop();
-  	}
 }
