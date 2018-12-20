@@ -32,9 +32,6 @@ public class MapGameController implements Initializable {
             }
         }
         mapPrint(chara, mapData);
-        if (chara.goalin(chara.getPosX(),chara.getPosY()) == true){
-            newMap();
-        }
     }
 
     public void newMap() {//新しいマップの呼び出し
@@ -62,8 +59,8 @@ public class MapGameController implements Initializable {
         c.Item(cx,cy);
         boolean goal =c.goalin(cx,cy);
         c.Warp(cx,cy);//ワープに関係
-        cx = c.getPosX();
-        cy = c.getPosY();
+        cx = c.getPosX();//ワープに関係
+        cy = c.getPosY();//ワープに関係
         mapGrid.getChildren().clear();
         for(int y=0; y<mapData.getHeight(); y++){
             for(int x=0; x<mapData.getWidth(); x++){
@@ -111,12 +108,13 @@ public class MapGameController implements Initializable {
         int cy = chara.getPosY();
         outputAction("DOWN");
         chara.setCharaDir(MoveChara.TYPE_DOWN);
-        boolean movewall = chara.DownMoveWall(cx,cy);
+        boolean movewall = chara.DownMoveWall(cx,cy);//動く壁があるかどうかの判定
         if (movewall == false){
             chara.move(0, 1);
         }
         mapPrint(chara, mapData);
     }
+
     public void downButtonAction(ActionEvent event) {
         downButtonAction();
     }
@@ -126,7 +124,7 @@ public class MapGameController implements Initializable {
         int cy = chara.getPosY();
         outputAction("UP");
         chara.setCharaDir(MoveChara.TYPE_UP);
-        boolean movewall = chara.UpMoveWall(cx,cy);
+        boolean movewall = chara.UpMoveWall(cx,cy);//動く壁があるかどうかの判定
         if (movewall == false){
             chara.move(0, -1);
         }
@@ -141,7 +139,7 @@ public class MapGameController implements Initializable {
         int cy = chara.getPosY();
         outputAction("RIGHT");
         chara.setCharaDir(MoveChara.TYPE_RIGHT);
-        boolean movewall = chara.RightMoveWall(cx,cy);
+        boolean movewall = chara.RightMoveWall(cx,cy);//動く壁があるかどうかの判定
         if (movewall == false){
             chara.move( 1, 0);
         }
@@ -156,7 +154,7 @@ public class MapGameController implements Initializable {
         int cy = chara.getPosY();
         outputAction("LEFT");
         chara.setCharaDir(MoveChara.TYPE_LEFT);
-        boolean movewall = chara.LeftMoveWall(cx,cy);
+        boolean movewall = chara.LeftMoveWall(cx,cy);//動く壁があるかどうかの判定
         if (movewall == false){
             chara.move(-1, 0);
         }
