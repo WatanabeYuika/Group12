@@ -10,6 +10,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.Group;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.util.Duration;
+
 public class MapGameController implements Initializable {
     public MapData mapData;
     public MoveChara chara;
@@ -17,6 +23,9 @@ public class MapGameController implements Initializable {
     public ImageView[] mapImageViews;
 //    public Group[] mapGroups;
 
+    public int timeLimit = 50;
+    public Timeline timer;
+    public Label timeLabel;
     public Label itemLabel;
 
     @Override
@@ -31,7 +40,11 @@ public class MapGameController implements Initializable {
                 mapImageViews[index] = mapData.getImageView(x,y);
             }
         }
+        setTimer();
         mapPrint(chara, mapData);
+        if (chara.goalin(chara.getPosX(),chara.getPosY()) == true){
+            newMap();
+        }
     }
 
     public void newMap() {//新しいマップの呼び出し
@@ -59,8 +72,8 @@ public class MapGameController implements Initializable {
         c.Item(cx,cy);
         boolean goal =c.goalin(cx,cy);
         c.Warp(cx,cy);//ワープに関係
-        cx = c.getPosX();//ワープに関係
-        cy = c.getPosY();//ワープに関係
+        cx = c.getPosX();
+        cy = c.getPosY();
         mapGrid.getChildren().clear();
         for(int y=0; y<mapData.getHeight(); y++){
             for(int x=0; x<mapData.getWidth(); x++){
@@ -75,8 +88,11 @@ public class MapGameController implements Initializable {
         }
         int key_count = c.getKey_count();
         String Key = String.valueOf(key_count);
-        itemLabel.setText(Key);
+        itemLabel.setText("鍵の個数　" + Key);
         if(goal == true){
+            stopTimer();
+            timeLimit = 100;
+            setTimer();
             newMap();
         }
     }
@@ -108,13 +124,12 @@ public class MapGameController implements Initializable {
         int cy = chara.getPosY();
         outputAction("DOWN");
         chara.setCharaDir(MoveChara.TYPE_DOWN);
-        boolean movewall = chara.DownMoveWall(cx,cy);//動く壁があるかどうかの判定
+        boolean movewall = chara.DownMoveWall(cx,cy);
         if (movewall == false){
             chara.move(0, 1);
         }
         mapPrint(chara, mapData);
     }
-
     public void downButtonAction(ActionEvent event) {
         downButtonAction();
     }
@@ -124,7 +139,7 @@ public class MapGameController implements Initializable {
         int cy = chara.getPosY();
         outputAction("UP");
         chara.setCharaDir(MoveChara.TYPE_UP);
-        boolean movewall = chara.UpMoveWall(cx,cy);//動く壁があるかどうかの判定
+        boolean movewall = chara.UpMoveWall(cx,cy);
         if (movewall == false){
             chara.move(0, -1);
         }
@@ -139,7 +154,7 @@ public class MapGameController implements Initializable {
         int cy = chara.getPosY();
         outputAction("RIGHT");
         chara.setCharaDir(MoveChara.TYPE_RIGHT);
-        boolean movewall = chara.RightMoveWall(cx,cy);//動く壁があるかどうかの判定
+        boolean movewall = chara.RightMoveWall(cx,cy);
         if (movewall == false){
             chara.move( 1, 0);
         }
@@ -154,14 +169,31 @@ public class MapGameController implements Initializable {
         int cy = chara.getPosY();
         outputAction("LEFT");
         chara.setCharaDir(MoveChara.TYPE_LEFT);
-        boolean movewall = chara.LeftMoveWall(cx,cy);//動く壁があるかどうかの判定
+        boolean movewall = chara.LeftMoveWall(cx,cy);
         if (movewall == false){
             chara.move(-1, 0);
         }
-        
         mapPrint(chara, mapData);
     }
     public void leftButtonAction(ActionEvent event) {
         leftButtonAction();
     }
+
+    public void setTimer() {
+  		timer = new Timeline(new KeyFrame(Duration.seconds(1),new EventHandler<ActionEvent>(){
+  		    @Override
+  		    public void handle(ActionEvent event) {
+  							timeLimit = timeLimit - 1;
+                String T = String.valueOf(timeLimit);
+                timeLabel.setText("残り時間　" + T);
+  		    }
+  		}));
+
+  		timer.setCycleCount(timeLimit);
+  		timer.play();
+  	}
+
+  	public void stopTimer() {
+  		timer.stop();
+  	}
 }
