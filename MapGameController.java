@@ -43,7 +43,7 @@ public class MapGameController implements Initializable {
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-		mapData = new MapData(21,15,2);//level=0が最初
+		mapData = new MapData(21,15,0);//level=0が最初
 		chara = new MoveChara(1,1,mapData,0);
 		//        mapGroups = new Group[mapData.getHeight()*mapData.getWidth()];
 		mapImageViews = new ImageView[mapData.getHeight()*mapData.getWidth()];
@@ -66,11 +66,8 @@ public class MapGameController implements Initializable {
 			chara = new MoveChara(2,1,mapData,level);
 		}else if(level == 1 || level == 3 || level == 4){
 			chara = new MoveChara(1,1,mapData,level);
-		}else if(level == 5){
-			System.out.print("Finish!!");
-			System.exit(0);
 		}
-
+		
 		mapImageViews = new ImageView[mapData.getHeight()*mapData.getWidth()];
 		for(int y=0; y<mapData.getHeight(); y++){
 			for(int x=0; x<mapData.getWidth(); x++){

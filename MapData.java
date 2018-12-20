@@ -55,7 +55,8 @@ public class MapData {
 
 			}else if(level == 2){
 
-				putGoal(19,13);
+				putGoal(4,1);
+				putWarp(5,2);
 				putWarp(2,12);
 				putWarp(15,13);
 				putMoveWall(4,3);
@@ -72,7 +73,9 @@ public class MapData {
 
 				putGoal(19,13);
 				putWarp(4,1);
-				putWarp(19,7);
+				putWarp(18,8);
+				putWarp(9,13);
+				putWarp(2,13);
 				putMoveWall(1,2);
 				for(i = 3; i <= 11; i++){
 					putMoveWall(i,i);
@@ -97,7 +100,10 @@ public class MapData {
 					int a,b;
 					a = (int)(Math.random()*width);
 					b = (int)(Math.random()*height);
-					if(getMap(a,b) == MapData.TYPE_NONE){
+					if(getMap(a,b) == MapData.TYPE_NONE 
+					 && (a != 6 && b != 2) && (a != 8 && b != 2) 
+					 && (a != 13 && b != 6) 
+					 && (a != 16 && b != 9) && (a != 14 && b != 9)){
 						putWarp(a,b);
 						break;
 					}
