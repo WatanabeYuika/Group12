@@ -29,9 +29,9 @@ public class MoveChara {
     private int charaDir;
     private int key_count = 0;//鍵のカウント
     private int item_count = 0; //アイテムのカウント
-    private int goal_count = 0;//ゴールした回数
+    private int goal_count;
 
-    MoveChara(int startX, int startY, MapData mapData){
+    MoveChara(int startX, int startY, MapData mapData, int goal){
         this.mapData = mapData;
 
         charaImages = new Image[4][3];
@@ -49,6 +49,8 @@ public class MoveChara {
 
         posX = startX;
         posY = startY;
+
+        goal_count = goal;
 
         setCharaDir(TYPE_DOWN);
     }
@@ -237,6 +239,7 @@ public class MoveChara {
         if((mapData.getMap(cx,cy) == MapData.TYPE_GOAL ) && (key_count >= 3)){
             System.out.print("GOAL!\n");
             goal_count++;
+            System.out.print("next level" + goal_count );
             return true;
         }
 

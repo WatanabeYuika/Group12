@@ -10,6 +10,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.Group;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.util.Duration;
+
 public class MapGameController implements Initializable {
     public MapData mapData;
     public MoveChara chara;
@@ -17,12 +23,15 @@ public class MapGameController implements Initializable {
     public ImageView[] mapImageViews;
 //    public Group[] mapGroups;
 
+    public int timeLimit = 50;
+    public Timeline timer;
+    public Label timeLabel;
     public Label itemLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         mapData = new MapData(21,15,0);//level=0が最初
-        chara = new MoveChara(1,1,mapData);
+        chara = new MoveChara(1,1,mapData,0);
 //        mapGroups = new Group[mapData.getHeight()*mapData.getWidth()];
         mapImageViews = new ImageView[mapData.getHeight()*mapData.getWidth()];
         for(int y=0; y<mapData.getHeight(); y++){
@@ -31,20 +40,17 @@ public class MapGameController implements Initializable {
                 mapImageViews[index] = mapData.getImageView(x,y);
             }
         }
+        setTimer();
         mapPrint(chara, mapData);
-        if (chara.goalin(chara.getPosX(),chara.getPosY()) == true){
-            newMap();
-        }
     }
 
     public void newMap() {//新しいマップの呼び出し
         int level = chara.getGoal_count();
-        if(level == 1){
-            mapData = new MapData(21,15,level);
-            chara = new MoveChara(1,1,mapData);
-        }else if(level == 2){
-            mapData = new MapData(21,15,level);//マップの追加に
-            chara = new MoveChara(1,1,mapData);
+        mapData = new MapData(21,15,level);
+        if(level == 2){
+            chara = new MoveChara(2,1,mapData,level);
+        }else{
+            chara = new MoveChara(1,1,mapData,level);
         }
         mapImageViews = new ImageView[mapData.getHeight()*mapData.getWidth()];
         for(int y=0; y<mapData.getHeight(); y++){
@@ -78,9 +84,12 @@ public class MapGameController implements Initializable {
         }
         int key_count = c.getKey_count();
         String Key = String.valueOf(key_count);
-        itemLabel.setText(Key);
+        itemLabel.setText("鍵の個数　" + Key);
         if(goal == true){
-            newMap();
+            stopTimer();//タイマー
+            timeLimit = 100;
+            setTimer();
+            newMap();//新しいマップの呼び出し
         }
     }
 
@@ -166,4 +175,22 @@ public class MapGameController implements Initializable {
     public void leftButtonAction(ActionEvent event) {
         leftButtonAction();
     }
+
+    public void setTimer() {//タイマーセット
+  		timer = new Timeline(new KeyFrame(Duration.seconds(1),new EventHandler<ActionEvent>(){
+  		    @Override
+  		    public void handle(ActionEvent event) {
+  							timeLimit = timeLimit - 1;
+                String T = String.valueOf(timeLimit);
+                timeLabel.setText("残り時間　" + T);
+  		    }
+  		}));
+
+  		timer.setCycleCount(timeLimit);
+  		timer.play();
+  	}
+
+  	public void stopTimer() {
+  		timer.stop();
+  	}
 }
