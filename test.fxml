@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="540.0" maxWidth="960.0" minHeight="540.0" minWidth="960.0" onKeyPressed="#opkeyAction" prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="test">
+   <children>
+      <ImageView fx:id="image" fitHeight="540.0" fitWidth="720.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@png/MATATABI.png" />
+         </image>
+         <VBox.margin>
+            <Insets left="120.0" />
+         </VBox.margin>
+      </ImageView>
+   </children>
+</VBox>
