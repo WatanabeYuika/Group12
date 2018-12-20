@@ -49,8 +49,11 @@ public class MapGameController implements Initializable {
         mapData = new MapData(21,15,level);
         if(level == 2){
             chara = new MoveChara(2,1,mapData,level);
-        }else{
+        }else if(level == 1 || level == 3 || level == 4){
             chara = new MoveChara(1,1,mapData,level);
+        }else if(level == 5){
+            System.out.print("Finish!!");
+            System.exit(0);
         }
         mapImageViews = new ImageView[mapData.getHeight()*mapData.getWidth()];
         for(int y=0; y<mapData.getHeight(); y++){
