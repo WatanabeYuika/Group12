@@ -18,6 +18,8 @@ public class MoveChara {
     private int posY;
 
     private MapData mapData;
+    private MapGameController MapGameController;
+    private mus mus;
 
     private Image[][] charaImages;
     private ImageView[] charaImageViews;
@@ -26,8 +28,11 @@ public class MoveChara {
     private int count   = 0;
     private int diffx   = 1;
     private int charaDir;
+    private int key_count = 0;//鍵のカウント
+    private int item_count = 0; //アイテムのカウント
+    private int goal_count = 0;//ゴールした回数
 
-    MoveChara(int startX, int startY, MapData mapData){
+    MoveChara(int startX, int startY, MapData mapData,int goal){
         this.mapData = mapData;
 
         charaImages = new Image[4][3];
@@ -79,10 +84,36 @@ public class MoveChara {
         }
     }
 
+    public int getItem_count(){
+        return item_count;
+    }
+
+    public int getKey_count(){
+        return key_count;
+    }
+
+    public int getGoal_count(){
+        return goal_count;
+    }
+
     public boolean canMove(int dx, int dy){
         if (mapData.getMap(posX+dx, posY+dy) == MapData.TYPE_WALL){
             return false;
         } else if (mapData.getMap(posX+dx, posY+dy) == MapData.TYPE_NONE){
+            return true;
+        }else if (mapData.getMap(posX+dx, posY+dy) == MapData.TYPE_KEY){//アイテム上を動けるように
+            return true;
+        }else if (mapData.getMap(posX+dx, posY+dy) == MapData.TYPE_ITEM){
+            return true;
+        }else if (mapData.getMap(posX+dx, posY+dy) == MapData.TYPE_GOAL){
+            return true;
+        }else if (mapData.getMap(posX+dx, posY+dy) == MapData.TYPE_WARP){//ワープ上を動けるように
+            return true;
+        }else if (mapData.getMap(posX+dx, posY+dy) == MapData.TYPE_MOVEWALL){
+                return false;
+        }else if (mapData.getMap(posX+dx, posY+dy) == MapData.TYPE_FALL){//落とし穴では動けない
+            return false;
+        }else if (mapData.getMap(posX+dx, posY+dy) == MapData.TYPE_FALLWALL){ //壁を落としたあと動けるように
             return true;
         }
         return false;
@@ -96,6 +127,125 @@ public class MoveChara {
         }else {
             return false;
         }
+    }
+
+
+    public boolean Item(int cx, int cy){  //アイテム取得メソッド
+        if(mapData.getMap(cx, cy) == MapData.TYPE_KEY || mapData.getMap(cx, cy) == MapData.TYPE_ITEM){
+            if(mapData.getMap(cx, cy) == MapData.TYPE_KEY){
+                key_count++;
+                System.out.println("Key"+ key_count);
+		mus.key();
+            }else if(mapData.getMap(cx, cy) == MapData.TYPE_ITEM){
+                item_count++;
+                System.out.println("Item"+ item_count);
+		mus.item();
+            }
+            mapData.setMap(cx, cy, MapData.TYPE_NONE);
+            mapData.setImageViews();
+            return true;
+        }
+        return true;
+    }
+
+    public boolean Warp(int cx, int cy){ //ワープできるように
+        if(mapData.getMap(cx, cy) == mapData.TYPE_WARP){
+            int width, height, x, y;
+            width = mapData.getWidth();
+            height = mapData.getHeight();
+            while(true){
+                x = (int)(Math.random()*width);
+                y = (int)(Math.random()*height);
+                if(mapData.getMap(x,y) == mapData.TYPE_NONE){
+                    posX = x;
+                    posY = y;
+                    break;
+                }
+            }
+    		mus.warp();	    
+            System.out.print("Warp!");
+        }
+        return true;
+    }
+
+    public boolean DownMoveWall(int cx, int cy){ //下に壁を動かす
+        if(mapData.getMap(cx, cy+1) == mapData.TYPE_MOVEWALL && mapData.getMap(cx, cy+2) == mapData.TYPE_NONE){
+            mapData.setMap(cx, cy+1, MapData.TYPE_NONE);
+            mapData.setMap(cx, cy+2, MapData.TYPE_MOVEWALL);
+            System.out.print("move wall down\n");
+            mapData.setImageViews();
+            return true;            
+        }else if(mapData.getMap(cx, cy+1) == mapData.TYPE_MOVEWALL && mapData.getMap(cx, cy+2) == mapData.TYPE_FALL){
+            mapData.setMap(cx, cy+1, MapData.TYPE_NONE);
+            mapData.setMap(cx, cy+2, MapData.TYPE_FALLWALL);
+            System.out.print("move wall down and fall\n");
+            mapData.setImageViews();
+            return true;    
+        }
+        return false;
+    }
+
+    public boolean UpMoveWall(int cx, int cy){ //上に壁を動かす
+        if(mapData.getMap(cx, cy-1) == mapData.TYPE_MOVEWALL && mapData.getMap(cx, cy-2) == mapData.TYPE_NONE){
+            mapData.setMap(cx, cy-1, MapData.TYPE_NONE);
+            mapData.setMap(cx, cy-2, MapData.TYPE_MOVEWALL);
+            System.out.print("move wall up\n");
+            mapData.setImageViews();
+            return true;            
+        }else if(mapData.getMap(cx, cy-1) == mapData.TYPE_MOVEWALL && mapData.getMap(cx, cy-2) == mapData.TYPE_FALL){
+            mapData.setMap(cx, cy-1, MapData.TYPE_NONE);
+            mapData.setMap(cx, cy-2, MapData.TYPE_FALLWALL);
+            System.out.print("move wall up and fall\n");
+            mapData.setImageViews();
+            return true;    
+        }
+        return false;
+    }
+
+
+    public boolean RightMoveWall(int cx, int cy){ //右に壁を動かす
+        if(mapData.getMap(cx+1, cy) == mapData.TYPE_MOVEWALL && mapData.getMap(cx+2, cy) == mapData.TYPE_NONE){
+            mapData.setMap(cx+1, cy, MapData.TYPE_NONE);
+            mapData.setMap(cx+2, cy, MapData.TYPE_MOVEWALL);
+            System.out.print("move wall right\n");
+            mapData.setImageViews();
+            return true;            
+        }else if(mapData.getMap(cx+1, cy) == mapData.TYPE_MOVEWALL && mapData.getMap(cx+2, cy) == mapData.TYPE_FALL){
+            mapData.setMap(cx+1, cy, MapData.TYPE_NONE);
+            mapData.setMap(cx+2, cy, MapData.TYPE_FALLWALL);
+            System.out.print("move wall right and fall\n");
+            mapData.setImageViews();
+            return true;    
+        }
+        return false;
+    }
+
+    public boolean LeftMoveWall(int cx, int cy){ //左に壁を動かす
+        if(mapData.getMap(cx-1, cy) == mapData.TYPE_MOVEWALL && mapData.getMap(cx-2, cy) == mapData.TYPE_NONE){
+            mapData.setMap(cx-1, cy, MapData.TYPE_NONE);
+            mapData.setMap(cx-2, cy, MapData.TYPE_MOVEWALL);
+            System.out.print("move wall left\n");
+            mapData.setImageViews();
+            return true;            
+        }else if(mapData.getMap(cx-1, cy) == mapData.TYPE_MOVEWALL && mapData.getMap(cx-2, cy) == mapData.TYPE_FALL){
+            mapData.setMap(cx-1, cy, MapData.TYPE_NONE);
+            mapData.setMap(cx-2, cy, MapData.TYPE_FALLWALL);
+            System.out.print("move wall left and fall\n");
+            mapData.setImageViews();
+            return true;    
+        }
+        return false;
+    }
+
+    public boolean goalin(int cx, int cy){ //ゴールしたら
+        if((mapData.getMap(cx,cy) == MapData.TYPE_GOAL ) && (key_count >= 3)){
+            System.out.print("GOAL!\n");
+            goal_count++;
+	    System.out.print("next level" + goal_count);
+            return true;
+        }
+
+       return false;
     }
 
     public ImageView getCharaImageView(){
@@ -120,6 +270,8 @@ public class MoveChara {
             this.charaImages = images;
             this.index      = 0;
         }
+
+        
 
         @Override
         public void handle( long now ) {
