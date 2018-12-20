@@ -38,7 +38,7 @@ public class MapData {
 			digMap(1, 3);
 			putGoal(19,13);
 			putItem(3,1);//鍵
-			putItem(10,2);//にんじん
+			putItem(40,2);//にんじん
 
 
 		}else if(level >= 1){
@@ -55,7 +55,7 @@ public class MapData {
 
 			}else if(level == 2){
 
-				putGoal(4,1);
+				putGoal(19,13);
 				putWarp(2,12);
 				putWarp(15,13);
 				putMoveWall(4,3);
@@ -72,7 +72,7 @@ public class MapData {
 
 				putGoal(19,13);
 				putWarp(4,1);
-				putWarp(18,8);
+				putWarp(19,7);
 				putMoveWall(1,2);
 				for(i = 3; i <= 11; i++){
 					putMoveWall(i,i);

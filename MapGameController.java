@@ -39,10 +39,11 @@ public class MapGameController implements Initializable {
 	public Label itemLabel1;
 	public Label itemLabel2;
 	public Label timeLabel;
+	int level=0;
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-		mapData = new MapData(21,15,0);//level=0が最初
+		mapData = new MapData(21,15,2);//level=0が最初
 		chara = new MoveChara(1,1,mapData,0);
 		//        mapGroups = new Group[mapData.getHeight()*mapData.getWidth()];
 		mapImageViews = new ImageView[mapData.getHeight()*mapData.getWidth()];
@@ -57,10 +58,10 @@ public class MapGameController implements Initializable {
 			newMap();
 		}
 	}
-
 	public void newMap() {//新しいマップの呼び出し
-		int level = chara.getGoal_count();
+		level++;
 		mapData = new MapData(21,15,level);
+		System.out.println("z");
 		if(level == 2){
 			chara = new MoveChara(2,1,mapData,level);
 		}else if(level == 1 || level == 3 || level == 4){
@@ -79,6 +80,8 @@ public class MapGameController implements Initializable {
 		}
 		mapPrint(chara, mapData);
 	}
+
+
 
 	public void mapPrint(MoveChara c, MapData m){
 		int cx = chara.getPosX();
@@ -104,22 +107,21 @@ public class MapGameController implements Initializable {
 		String Key = String.valueOf(key_count);
 		itemLabel1.setText("鍵の個数　"+Key);
 		if(goal == true){
-			//stopTimer();
-			timeLimit=100;
-			setTimer();
 			newMap();
 		}
 		//スコア関連
-		int item_count = c.getItem_count();
-		int item2_count = c.getKey_count(); 
-		int soten = item2_count*10+100;
-		String Item = String.valueOf(item_count);
-		String Soten = String.valueOf(soten);
-		String Score= String.valueOf(getScore(soten,item_count));
 		//ここから
-		itemLabel.setText("素点:"+Soten);
-		//itemLabel2.setText(" スコア:"+Score);
+		int soten=getget();
+		itemLabel.setText("素点:"+soten);
+		int score=getScore(soten,chara.getItem_count());
+		timeLabel.setText(" スコア:"+score);
 		//ここまでで色々いじれる
+	}
+	public int getget(){
+		int item_count = chara.getItem_count();
+		int item2_count = chara.getKey_count(); 
+		int soten = item2_count*10+100;
+		return soten;
 	}
 	public  static int getScore(int soten,int item_count){
 		int score=0;
@@ -207,19 +209,6 @@ public class MapGameController implements Initializable {
 	}
 	public void leftButtonAction(ActionEvent event) {
 		leftButtonAction();
-	}
-	public void setTimer() {//タイマーセット
-		timer = new Timeline(new KeyFrame(Duration.seconds(1),new EventHandler<ActionEvent>(){
-			@Override
-			public void handle(ActionEvent event) {
-				timeLimit = timeLimit - 1;
-				String T = String.valueOf(timeLimit);
-				timeLabel.setText("残り時間　" + T);
-			}
-		}));
-
-		timer.setCycleCount(timeLimit);
-		timer.play();
 	}
 
 	public void stopTimer() {

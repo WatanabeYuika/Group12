@@ -238,7 +238,7 @@ public class MoveChara {
     }
 
     public boolean goalin(int cx, int cy){ //ゴールしたら
-        if((mapData.getMap(cx,cy) == MapData.TYPE_GOAL ) && (key_count >= 3)){
+        if((mapData.getMap(cx,cy) == MapData.TYPE_GOAL ) && (key_count >= 0)){
             System.out.print("GOAL!\n");
             goal_count++;
 	    System.out.print("next level" + goal_count);
