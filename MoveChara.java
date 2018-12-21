@@ -19,6 +19,7 @@ public class MoveChara {
 
     private MapData mapData;
     private MapGameController MapGameController;
+    private mus mus;
 
     private Image[][] charaImages;
     private ImageView[] charaImageViews;
@@ -29,9 +30,9 @@ public class MoveChara {
     private int charaDir;
     private int key_count = 0;//鍵のカウント
     private int item_count = 0; //アイテムのカウント
-    private int goal_count;
+    private int goal_count = 0;//ゴールした回数
 
-    MoveChara(int startX, int startY, MapData mapData, int goal){
+    MoveChara(int startX, int startY, MapData mapData,int goal){
         this.mapData = mapData;
 
         charaImages = new Image[4][3];
@@ -49,8 +50,6 @@ public class MoveChara {
 
         posX = startX;
         posY = startY;
-
-        goal_count = goal;
 
         setCharaDir(TYPE_DOWN);
     }
@@ -136,9 +135,11 @@ public class MoveChara {
             if(mapData.getMap(cx, cy) == MapData.TYPE_KEY){
                 key_count++;
                 System.out.println("Key"+ key_count);
+		mus.key();
             }else if(mapData.getMap(cx, cy) == MapData.TYPE_ITEM){
                 item_count++;
                 System.out.println("Item"+ item_count);
+		mus.item();
             }
             mapData.setMap(cx, cy, MapData.TYPE_NONE);
             mapData.setImageViews();
@@ -160,7 +161,8 @@ public class MoveChara {
                     posY = y;
                     break;
                 }
-            }	
+            }
+    		mus.warp();	    
             System.out.print("Warp!");
         }
         return true;
@@ -237,9 +239,13 @@ public class MoveChara {
 
     public boolean goalin(int cx, int cy){ //ゴールしたら
         if((mapData.getMap(cx,cy) == MapData.TYPE_GOAL ) && (key_count >= 3)){
-            System.out.print("GOAL!\n");
-            goal_count++;
-            System.out.print("next level" + goal_count );
+            if(goal_count < 4){
+                goal_count++;
+                System.out.print("GOAL!\n");
+            }else if(goal_count == 4){
+                System.out.print("Finish!!");
+			    System.exit(0);
+            }
             return true;
         }
 
