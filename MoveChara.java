@@ -242,7 +242,6 @@ public class MoveChara {
             if(goal_count < 4){
                 goal_count++;
                 System.out.print("GOAL!\n");
-                System.out.print("next level" + goal_count + "\n");
             }else if(goal_count == 4){
                 System.out.print("Finish!!");
 			    System.exit(0);
